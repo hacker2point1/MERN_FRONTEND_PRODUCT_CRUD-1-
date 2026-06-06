@@ -63,6 +63,20 @@ export default function Home() {
     }
   };
 
+  const handleApplyFilters = async (filters: { color?: string; size?: string; brand?: string }) => {
+    try {
+      setLoading(true);
+      setError(null);
+      console.debug("Applying filters from page", { search, filters });
+      const data = await searchProducts(search, filters);
+      setProducts(data ?? []);
+    } catch (e) {
+      setError("Filter failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -84,7 +98,7 @@ export default function Home() {
           top: 0,
         }}
       >
-        <ProductFilters />
+        <ProductFilters onApply={handleApplyFilters} />
       </Box>
 
       {/* Main Content */}

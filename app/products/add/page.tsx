@@ -9,10 +9,12 @@ import { useForm } from "react-hook-form";
 import {
   Box,
   Paper,
-  Typography,
+  
   TextField,
   Button,
   Grid,
+  Typography,
+  
 } from "@mui/material";
 
 interface ProductFormData {
@@ -21,6 +23,9 @@ interface ProductFormData {
   brand: string;
   price: number;
   description: string;
+  color:string;
+  size:string;
+
 }
 
 export default function AddProductPage() {
@@ -58,6 +63,8 @@ export default function AddProductPage() {
       const formData = new FormData();
 
       formData.append("name", data.name);
+      formData.append("color", data.color)
+      formData.append("size",data.size)
       formData.append("category", data.category);
       formData.append("brand", data.brand);
       formData.append(
@@ -127,7 +134,7 @@ export default function AddProductPage() {
         >
           <Grid container spacing={3}>
             {/* Product Name */}
-            <Grid item xs={12} md={6}>
+            <Grid size={{xs:12 , md:6}}>
               <TextField
                 fullWidth
                 label="Product Name"
@@ -141,9 +148,41 @@ export default function AddProductPage() {
                 }
               />
             </Grid>
+            
+            {/* color  */}
+             <Grid size={{xs:12 , md:6}}>
+              <TextField
+                fullWidth
+                label="Product Color"
+                {...register("color", {
+                  required:
+                    "Product color is required",
+                })}
+                error={!!errors.name}
+                helperText={
+                  errors.name?.message
+                }
+              />
+            </Grid>
+
+            {/* product size  */}
+             <Grid size={{xs:12 , md:6}}>
+              <TextField
+                fullWidth
+                label="Product Size"
+                {...register("size", {
+                  required:
+                    "Product size is required",
+                })}
+                error={!!errors.name}
+                helperText={
+                  errors.name?.message
+                }
+              />
+            </Grid>
 
             {/* Category */}
-            <Grid item xs={12} md={6}>
+             <Grid size={{xs:12 , md:6}}>
               <TextField
                 fullWidth
                 label="Category"
@@ -159,7 +198,7 @@ export default function AddProductPage() {
             </Grid>
 
             {/* Brand */}
-            <Grid item xs={12} md={6}>
+             <Grid size={{xs:12 , md:6}}>
               <TextField
                 fullWidth
                 label="Brand"
@@ -175,7 +214,7 @@ export default function AddProductPage() {
             </Grid>
 
             {/* Price */}
-            <Grid item xs={12} md={6}>
+             <Grid size={{xs:12 , md:6}}>
               <TextField
                 fullWidth
                 type="number"
@@ -197,7 +236,7 @@ export default function AddProductPage() {
             </Grid>
 
             {/* Description */}
-            <Grid item xs={12}>
+             <Grid size={{xs:12}}>
               <TextField
                 fullWidth
                 multiline
@@ -218,7 +257,7 @@ export default function AddProductPage() {
             </Grid>
 
             {/* Image Upload */}
-            <Grid item xs={12}>
+             <Grid size={{xs:12 }}>
               <Button
                 variant="contained"
                 component="label"
@@ -238,7 +277,7 @@ export default function AddProductPage() {
             </Grid>
 
             {/* Image Preview */}
-            <Grid item xs={12}>
+             <Grid size={{xs:12}}>
               <Box
                 sx={{
                   display: "flex",
@@ -270,7 +309,7 @@ export default function AddProductPage() {
             </Grid>
 
             {/* Submit Button */}
-            <Grid item xs={12}>
+             <Grid size={{xs:12 }}>
               <Button
                 type="submit"
                 variant="contained"

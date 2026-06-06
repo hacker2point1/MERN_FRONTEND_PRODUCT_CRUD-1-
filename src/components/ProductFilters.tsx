@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Box,
   Paper,
@@ -13,23 +14,52 @@ import {
 
 const sizes = ["S", "M", "L", "XL"];
 
-const colors = [
-  "Black",
-  "Blue",
-  "Grey",
-  "Light blue",
-  "Red",
-  "Steel",
-  "White",
-];
+const colors = ["Black", "Blue", "Grey", "Light blue", "Red", "Steel", "White"];
 
-const brands = [
-  "HP",
-  "PETER ENGLAND",
-  "SAMSUNG",
-];
+const brands = ["HP", "PETER ENGLAND", "SAMSUNG"];
 
-export default function ProductFilters() {
+interface FilterProps {
+  onApply?: (filters: { 
+    color?: string; 
+    size?: string; 
+    brand?: string }) => void;
+}
+
+export default function ProductFilters({ onApply }: FilterProps) {
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+
+  const toggle = (list: string[], setList: (v: string[]) => void, value: string) => {
+    if (list.includes(value)) {
+ setList(list.filter((i) => i !== value));
+    }
+     
+    else 
+    {
+ setList([...list, value]);
+    }
+     
+  };
+
+  const handleApply = () => {
+    const filters: { 
+      color?: string; 
+      size?: string; 
+      brand?: string } = {};
+    if (selectedSizes.length) {
+      filters.size = selectedSizes.join(",");
+    }
+    if (selectedColors.length) {
+      filters.color = selectedColors.join(",");
+    }
+    if (selectedBrands.length) {
+      filters.brand = selectedBrands.join(",");
+    }
+    // console.debug("ProductFilters: applying filters", filters);
+    onApply?.(filters);
+  };
+
   return (
     <Paper
       elevation={0}
@@ -48,61 +78,28 @@ export default function ProductFilters() {
     >
       {/* Heading */}
       <div>
-        <Typography
-          variant="h6"
-          fontWeight={600}
-          mb={2}
-          sx={{ fontSize: 20 }}
-        >
+        <Typography variant="h6" sx={{ fontSize: 20, fontWeight: 600, mb: 2 }}>
           Product Filter
         </Typography>
 
-      {/* Size */}
-      <Typography
-        variant="h5"
-        fontWeight={500}
-        mb={2}
-        sx={{ fontSize: 15 }}
-      >
-        Size
-      </Typography>
-
-      <Divider sx={{ mb: 2 }} />
-
-      <FormGroup>
-        {sizes.map((size) => (
-          <FormControlLabel
-            key={size}
-            control={<Checkbox />}
-            label={size}
-            sx={{
-              mb: 1,
-              "& .MuiTypography-root": {
-                fontSize: 16,
-              },
-            }}
-          />
-        ))}
-      </FormGroup>
-
-      {/* Color */}
-      <Box mt={4}>
-        <Typography
-          variant="h5"
-          fontWeight={500}
-          mb={2}
-        >
-          Color
+        {/* Size */}
+        <Typography variant="h5" sx={{ fontSize: 15, fontWeight: 500, mb: 2 }}>
+          Size
         </Typography>
 
-        <Divider sx={{ mb: 3 }} />
+        <Divider sx={{ mb: 2 }} />
 
         <FormGroup>
-          {colors.map((color) => (
+          {sizes.map((size) => (
             <FormControlLabel
-              key={color}
-              control={<Checkbox />}
-              label={color}
+              key={size}
+              control={
+                <Checkbox
+                  checked={selectedSizes.includes(size)}
+                  onChange={() => toggle(selectedSizes, setSelectedSizes, size)}
+                />
+              }
+              label={size}
               sx={{
                 mb: 1,
                 "& .MuiTypography-root": {
@@ -112,44 +109,75 @@ export default function ProductFilters() {
             />
           ))}
         </FormGroup>
-      </Box>
 
-      {/* Brand */}
-      <Box mt={4}>
-        <Typography
-          variant="h5"
-          fontWeight={500}
-          mb={2}
-        >
-          Brand
-        </Typography>
+        {/* Color */}
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h5" sx={{ fontWeight: 500, mb: 2 }}>
+            Color
+          </Typography>
 
-        <Divider sx={{ mb: 3 }} />
+          <Divider sx={{ mb: 3 }} />
 
-        <FormGroup>
-          {brands.map((brand) => (
-            <FormControlLabel
-              key={brand}
-              control={<Checkbox />}
-              label={brand}
-              sx={{
-                mb: 1,
-                "& .MuiTypography-root": {
-                  fontSize: 16,
-                },
-              }}
-            />
-          ))}
-        </FormGroup>
-      </Box>
+          <FormGroup>
+            {colors.map((color) => (
+              <FormControlLabel
+                key={color}
+                control={
+                  <Checkbox
+                    checked={selectedColors.includes(color)}
+                    onChange={() => toggle(selectedColors, setSelectedColors, color)}
+                  />
+                }
+                label={color}
+                sx={{
+                  mb: 1,
+                  "& .MuiTypography-root": {
+                    fontSize: 16,
+                  },
+                }}
+              />
+            ))}
+          </FormGroup>
+        </Box>
 
-      {/* Button */}
+        {/* Brand */}
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h5" sx={{ fontWeight: 500, mb: 2 }}>
+            Brand
+          </Typography>
+
+          <Divider sx={{ mb: 3 }} />
+
+          <FormGroup>
+            {brands.map((brand) => (
+              <FormControlLabel
+                key={brand}
+                control={
+                  <Checkbox
+                    checked={selectedBrands.includes(brand)}
+                    onChange={() => toggle(selectedBrands, setSelectedBrands, brand)}
+                  />
+                }
+                label={brand}
+                sx={{
+                  mb: 1,
+                  "& .MuiTypography-root": {
+                    fontSize: 16,
+                  },
+                }}
+              />
+            ))}
+          </FormGroup>
+        </Box>
+
+        {/* Button */}
       </div>
 
       <Box sx={{ mt: 2 }}>
         <Button
           variant="outlined"
           size="medium"
+          onClick={handleApply}
           sx={{
             width: "100%",
             py: 1,
