@@ -61,8 +61,14 @@ export default function EditProductPage() {
         description: product.description,
       });
 
+      const normalize = (url?: string) => {
+        if (!url) return "";
+        if (url.startsWith("http") || url.startsWith("/")) return url;
+        return `/${url}`;
+      };
+
       setExistingImages(
-        product.images?.map((img: { url: string }) => img.url) || []
+        product.images?.map((img: { url: string }) => normalize(img.url)) || []
       );
     } catch (error) {
       console.error(error);

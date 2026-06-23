@@ -8,6 +8,8 @@ export interface Product {
   price: number;
   discountPrice?: number;
   currency?: string;
+  color:string;
+  size:string;
   images?: {
     url: string;
   }[];

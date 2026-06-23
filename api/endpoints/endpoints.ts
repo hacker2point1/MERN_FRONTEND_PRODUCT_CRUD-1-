@@ -5,7 +5,9 @@ export const endpoints = {
         singleProduct:"/api/v1/get/single-products/:id",
         deleteProduct:"/api/v1/delete/product/:id",
         softDeleteProduct:"/api/v1/deleteSoft/product/:id",
-        searchProduct:"/api/v1/search/product"
+        searchProduct:"/api/v1/search/product",
+        getDeletedProducts:"/api/v1/trash",
+        restoreProduct:"/api/v1/restore/:id"
     }
 }
 
@@ -14,5 +16,7 @@ export const endpoint =  [
     endpoints.product.editProduct,
     endpoints.product.singleProduct,
     endpoints.product.deleteProduct,
-    endpoints.product.searchProduct
+    endpoints.product.searchProduct,
+    endpoints.product.getDeletedProducts,
+    endpoints.product.restoreProduct
 ]
