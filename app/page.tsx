@@ -10,6 +10,7 @@ import {
   TextField,
   Alert,
   CircularProgress,
+
 } from "@mui/material";
 
 import ProductGrid from "@/src/components/ProductGrid";
@@ -19,10 +20,11 @@ import {
   getProduct,
   searchProducts,
 } from "@/src/services/product.service";
+import { Delete } from "@mui/icons-material";
 
 export default function Home() {
   const router = useRouter();
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -150,6 +152,14 @@ export default function Home() {
               onClick={handleSearch}
             >
               Search
+            </Button>
+            <Button
+              variant="outlined"
+              startIcon={<Delete />}
+              color="error"
+              onClick={() => router.push("/deleted-items")}
+            >
+              Trash
             </Button>
           </Box>
         </Box>

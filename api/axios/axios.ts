@@ -3,7 +3,7 @@ import axios from "axios";
 import { Cookies } from "react-cookie";
 
 export const baseURL = `http://localhost:3007/`;
-let cookies = new Cookies()
+const cookies = new Cookies()
 const AxiosInstance = axios.create({
   baseURL,
 });
